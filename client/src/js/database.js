@@ -40,13 +40,13 @@ export const putDb = async (id, content) => {
 // return the result
 
 // export const getDb = async (id) => console.error('getDb not implemented');
-export const getDb = async (id) => {
-  const jateDB = await openDB('jate',1);
-  const tx = jateDB.transaction('jate', 'readonly ');
+export const getDb = async () => {
+  const jateDb = await openDB('jate', 1);
+  const tx = jateDb.transaction('jate', 'readonly');
   const store = tx.objectStore('jate');
-  const request = store.get(id);
+  const request = store.get(1); // Assuming you want to get by ID, adjust accordingly
   const result = await request;
-  console.log('result');
+  console.log(result);
   return result;
 }
 
