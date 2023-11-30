@@ -13,12 +13,6 @@ Some specific technologies this text editor application uses are: webpack, HMR (
 
 As a person that is busy and on the move, I would like something lightweight and easy to use either on my phone or home computer so I can take notes or write a dictation or just thoughts. This application will gives that to you.
 
-
-
-### Just to see how it will look using Insomnia, here is a snippet of all users:
-
-![img](./dist/images/friends_allusers.png). 
-
 ## Table of Contents
 
 * [Usage](#usage)
@@ -32,7 +26,7 @@ As a person that is busy and on the move, I would like something lightweight and
 
 ## Usage
 
-* The first thing you will do is [go to the deployed site here](https://github.com/flimits/friends_and_thoughts)
+* The first thing you will do is [go to the deployed site here](https://vast-badlands-35661-f01f3e4b3ad9.herokuapp.com/)
   * (screenshots below might help understand what you are going to see)
 * Click on the "Install" button in the upper left
   * this will install the application 
@@ -61,6 +55,9 @@ There is also javascript, Google Search, and Youtube university and a bit of Cha
 ## Repo 
 
 [GitHub Repo for (just) Another Text Editor](https://github.com/flimits/ate)
+<br>
+[Heroku Deployment (in case you missed it the first time)](https://vast-badlands-35661-f01f3e4b3ad9.herokuapp.com/)
+
 
 
 ## Screenshots of Application
@@ -185,7 +182,7 @@ Then there was the module.exports of these modules along with their associated c
 ```
  2. The post installation
  ```js
- 
+
  window.addEventListener('appinstalled', (event) => {
     // Clear prompt
     window.deferredPrompt = null;
