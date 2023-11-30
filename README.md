@@ -1,53 +1,53 @@
 # ate
-Another Text Editor that allows for creating and updating text
+Just Another Text Editor that allows for creating and updating text data and store it locally
 
-## Psuedo Code for this project
+## Description
 
-Psuedo code will be added to the following files to know what to do
-// Within client/src/js/database.js
-# friends_and_thoughts
+This application allows the user to create, edit, change and delete data on the fly using their browser, or installing it locally as a PWA (Progressive Web Application). It is a very lightweight application and can now be used on and off internet. Simply build it, start it and then install it using your browser and now you will have a functioning PWA you can use to take notes, write a paper, or whatever you want. 
 
-This API is to mimic the interactions between users and their friends in a Social Networking environment. 
+Some specific technologies this application uses are: webpack, HMR (Hot Module Replacement), IndexedDB and Babel as the core technologies. Here is what it will look like in browswer (or pretty much the same as an installed app):
 
-## Description and Motivation
+![img](./Public/Images/opening_page_in_browswer.png). 
 
-As a user, I would want to be able to add my username to a "Meet with Friends" - type Social media network so that I can share thoughts with them.
-With this API, The user will be able to share and receive "thought" (comments from friends). They can also create a friends list, and manage the thoughts and friends by changing or deleting them.
+## Motivation for this application
 
-### The following is a link to the video of the application's functionality:
-Video update is: https://drive.google.com/file/d/1iM4ztTg5A3WILhPJoiaBqJ88-tZ1j3xU/view
+As a person that is busy and on the move, I would like something lightweight and easy to use either on my phone or home computer so I can take notes or write a dictation or just thoughts. This application will gives that to you.
+
+
 
 ### Just to see how it will look using Insomnia, here is a snippet of all users:
 
 ![img](./dist/images/friends_allusers.png). 
 
-
-## Usage
-
-Since this is an API, it is created with the user in mind who wishes to implement it. Simply do the following and you will be able to build and use this for yourself.
-
-* First, clone this repo to your desktop somewhere.
-* Next, you need to install the libraries and dependencies required to run it
-  * cd <repo_location>
-  * npm install
-  * npm run start
-* Your application will now run. All you will need to do is use something like Insomnia (or another app that can use this API) to interact with the application and add your user data there.
-
-
 ## Table of Contents
 
+* [Usage](#usage)
 * [Technology Used](#technology-used)
 * [Repo Location](#repo)
 * [Screenshots of Application](screenshots-of-application)
 * [Learning Points](#learning-points)
 * [Code Snippets](#code-snippets)
 * [Contact Info](#contact-info)
+* [Psuedo Code](#psuedo-code-for-this-project)
+
+## Usage
+
+* The first thing you will do is [go to the deployed site here](https://github.com/flimits/friends_and_thoughts)
+* Click on the "Install" button in the upper left
+  * this will install the application
+  * bring it up immediately for you
+  * install it as a runnable application on your device
+
+Application is deployed on Heroku: 
+
+Github Repo:
+[GitHub Repo for ATE .. Another Text Editor](https://github.com/flimits/ate)
+
 
 ## Technology Used 
 
 | Technology Used         | Resource URL           | 
 | ------------- |:-------------:| 
-| Video: Screencastify Extension | [https://chromewebstore.google.com/detail/screencastify-screen-vide/mmeijimgabbpbgpdklnllpncmdofkcpn](https://chromewebstore.google.com/detail/screencastify-screen-vide/mmeijimgabbpbgpdklnllpncmdofkcpn)     |    
 | Mongoose | [https://mongoosejs.com/docs/index.html](https://mongoosejs.com/docs/index.html)     |    
 | Git | [https://git-scm.com/](https://git-scm.com/)     |    
 | NPM and ExpressJs | [https://www.npmjs.com/package/express](https://www.npmjs.com/package/express)|
@@ -95,107 +95,8 @@ To get a better picture of what it is doing, or going to do, here are three snap
 
 ## Learning Points and Lessons learned
 
-This was a great oportunity to learn Mongoose and Mongodb. I was excited to get it in place and start working on it
 
 ## Code Snippets
-
-This is a typical server.js file, but adding db connection to the mongoDB server
-```js
-const express = require('express');
-const db = require('./config/connection');
-const routes = require('./routes');
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(routes);
-
-db.once('open', () => {
-  app.listen(PORT, () => {
-    console.log(`API server for running on port ${PORT}!`);
-  });
-});
-```
-We now set up our routes
-```js
-const router = require('express').Router();
-const userRoutes = require('./userRoutes');
-const thoughtRoutes = require('./thoughtRoutes');
-
-router.use('/users', userRoutes);
-router.use('/thoughts', thoughtRoutes);
-
-module.exports = router;
-```
-Which will point to the locations of the user and thoughtRoutes.
-<br>
-
-Some key code would be how routes are set up differently for mongoose as opposed to sequelize. Here is for thoughts routing. All will be undfer /api/thoughts for GET, POST, DELETE
-```js
-const {
-  getThoughts,
-  createThought,
-  findAThought,
-  deleteAThought,
-  updateAThought,
-} = require('../../controllers/thought.js');
-
-// /api/thought .. get all thought and create a thought
-router.route('/').get(getThoughts).post(createThought);
-
-// /api/thought as well, to get one thought or delete one thought by id
-router.route('/:thoughtId').get(findAThought).delete(deleteAThought).put(updateAThought);
-```
-As an example for the modeling of mongoose, here is the Schema setup for users.
-```js
-const { Schema, model } = require('mongoose');
-
-// Schema to create User model
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      unique: true,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-      match: [/.+@.+\..+/, 'Please enter a valid e-mail address'],
-    },
-    thoughts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Thought',
-      },
-    ],
-    friends: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    ],
-  },
-  {
-    // Mongoose supports two Schema options to transform Objects after querying MongoDb: toJSON and toObject - Equivalent.
-    // Here we are indicating that we want virtuals to be included with our response, overriding the default behavior
-    toJSON: {
-      virtuals: true,
-    },
-    id: false,
-  }
-);
-
-userSchema.virtual('friendCount').get(function () {
-  return `${this.friends.length}`;
-});
-
-NOTE: the requirments for mongoose. But also, it is similary to that of Sequelize.
-```
 
 
 ## Contact Info
@@ -204,51 +105,10 @@ NOTE: the requirments for mongoose. But also, it is similary to that of Sequeliz
 |-----------|-----------|-----------|-----------|
 |Jason       |flimits@gmail.com|https://github.com/flimits|https://github.com/flimits/my-portfolio/|
 
-# PSUEDO Coding out 18 NoSQL: Social Network API
-1. Set up config - (make sure MONGOOSE connection are good).
-2. Set up route directory with CONTROLLERS and ROUTES in it.
-3. Set up Model directory
-4. Set up Utils directory
-5. Set up NPM - express , mongoose, nodemon --watch
-6. Create Server.js
-Model User
-- username
-- email
-- thoughts ( ref 'thought')
-- friends ( ref 'User')
-- virtual friendCount - going to have a function to calculate length of the FRIEND array.
-Model Thought
-- thoughtText
-- createdAt
-- username ( ref 'userId' )
-- reaction ( array of reactionId references )
-(doesn't have to be a model, has to be a schema)
-- virtual reactionCount - going to have a function
-to get the length of REACTIONS array
-Schema Reaction
-- Id
-- body
-- username
-- createdAt
-This will not be a model, but rather will be used as the `reaction` field's subdocument schema in the `Thought` model.
-API Routes
-User route
-- get 1 findOne({ })
-- get all find({ })
-- put findOneAndUpdate({ })
-- create create(req.body)
-- delete findOneAndDelete({ })
-- POST findOneAndUpdate {$AddtoSet { }}
-- DELETE for friend request findOneAndUpdate {$pull} {new True}
-Thought route
-- get 1
-- get all
-- put
-- create
-- delete
-- ADD / DELETE Reaction
-CONTROLLER
-Interact with the model
-modules.export = findAll(user)
-ROUTES interact with the Database
-render user
+## Psuedo Code for this project
+
+If you wish to look at some basic Psuedo coding that was done to help start this project, the main parts are in TODO within these files:
+```
+src/js/database.js
+webpack.config.js
+```
